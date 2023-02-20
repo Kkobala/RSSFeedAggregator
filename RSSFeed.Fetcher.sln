@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSSFeed.Fetcher", "RSSFeed.Fetcher\RSSFeed.Fetcher.csproj", "{CE9E5025-9348-48B4-AB66-199A94ECB75A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSSFeed.Api", "RSSFeed.Api\RSSFeed.Api.csproj", "{095E2375-6C03-4A1D-916A-EB2424F20623}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE9E5025-9348-48B4-AB66-199A94ECB75A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE9E5025-9348-48B4-AB66-199A94ECB75A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE9E5025-9348-48B4-AB66-199A94ECB75A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE9E5025-9348-48B4-AB66-199A94ECB75A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{095E2375-6C03-4A1D-916A-EB2424F20623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095E2375-6C03-4A1D-916A-EB2424F20623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095E2375-6C03-4A1D-916A-EB2424F20623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095E2375-6C03-4A1D-916A-EB2424F20623}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {031DEB90-CF57-47A8-AB7F-D6DCBF1CD659}
+	EndGlobalSection
+EndGlobal
