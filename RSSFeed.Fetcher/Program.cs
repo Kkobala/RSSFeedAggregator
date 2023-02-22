@@ -2,30 +2,37 @@
 using RSSFeed.Api.Db;
 using RSSFeed.Fetcher.Services;
 
-var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
+var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+optionsBuilder.UseSqlServer("Server=LocalHost;Database=rssfeedaggregatorapi_db;Trusted_Connection=true;MultipleActiveResultSets=True;Encrypt=False;");
 
-var db = new AppDbContext(optionBuilder.Options);
+using var db = new AppDbContext(optionsBuilder.Options);
 
-optionBuilder.UseSqlServer("Server=LocalHost;Database=rssfeedaggregatorapi_db;Trusted_Connection=true;MultipleActiveResultSets=True;Encrypt=False;");
+try
+{
+    db.Database.EnsureCreated();
 
-var newsfeedService = new NewsFeedService(db);
+    List<string> feedUrls = new List<string>
+    {
+        "https://stackoverflow.blog/feed/",
+        "https://dev.to/feed",
+        "https://www.freecodecamp.org/news/rss",
+        "https://martinfowler.com/feed.atom",
+        "https://codeblog.jonskeet.uk/feed/",
+        "https://devblogs.microsoft.com/visualstudio/feed/",
+        "https://feed.infoq.com/",
+        "https://css-tricks.com/feed/",
+        "https://codeopinion.com/feed/",
+        "https://andrewlock.net/rss.xml",
+        "https://michaelscodingspot.com/index.xml",
+        "https://www.tabsoverspaces.com/feed.xml"
+    };
 
-List<string> feedUrl = new List<string>
-            {
-                "https://stackoverflow.blog/feed/",
-                "https://dev.to/feed",
-                "https://www.freecodecamp.org/news/rss",
-                "https://martinfowler.com/feed.atom",
-                "https://codeblog.jonskeet.uk/feed/",
-                "https://devblogs.microsoft.com/visualstudio/feed/",
-                "https://feed.infoq.com/",
-                "https://css-tricks.com/feed/",
-                "https://codeopinion.com/feed/",
-                "https://andrewlock.net/rss.xml",
-                "https://michaelscodingspot.com/index.xml",
-                "https://www.tabsoverspaces.com/feed.xml"
-            };
+    var rssFeedService = new RssFeedService(db);
+    await rssFeedService.FetchAndSaveArticlesAsync(feedUrls);
+}
+finally
+{
+    db.Dispose();
+}
 
-await newsfeedService.FetchAndSaveArticlesAsync(feedUrl);
-
-Console.WriteLine("Parse Is Done");
+Console.WriteLine("Parse is done");
