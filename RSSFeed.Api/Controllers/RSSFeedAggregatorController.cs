@@ -34,7 +34,7 @@ namespace RSSFeed.Api.Controllers
                 Link = a.Link,
                 Author = a.Author,
                 Picture = a.Picture,
-                Summery = a.Summery,
+                Summary = a.Summary,
                 Tags = a.Tags,
                 PublishedDate = a.PublishedDate
             }).ToList();
@@ -60,7 +60,7 @@ namespace RSSFeed.Api.Controllers
                 Link = a.Link,
                 Author = a.Author,
                 Picture = a.Picture,
-                Summery = a.Summery,
+                Summary = a.Summary,
                 Tags = a.Tags,
                 PublishedDate = a.PublishedDate
             }).ToList();

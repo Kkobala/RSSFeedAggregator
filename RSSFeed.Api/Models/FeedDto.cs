@@ -8,7 +8,7 @@
         public string? Description { get; set; }
         public string? Link { get; set; }
         public string? Picture { get; set; }
-        public string? Summery { get; set; }
+        public string? Summary { get; set; }
         public string? Tags { get; set; }
         public DateTimeOffset PublishedDate { get; set; }
     }

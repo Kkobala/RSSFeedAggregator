@@ -5,11 +5,11 @@ namespace RSSFeed.Fetcher
 {
     public class Worker : BackgroundService
     {
-        private readonly RssFeedService _rssFeedService;
+        private readonly NewsFeedFetcherService _rssFeedFetcherService;
 
-        public Worker(RssFeedService rssFeedService)
+        public Worker(NewsFeedFetcherService rssFeedFetcherService)
         {
-            _rssFeedService = rssFeedService;
+            _rssFeedFetcherService = rssFeedFetcherService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -18,7 +18,7 @@ namespace RSSFeed.Fetcher
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await _rssFeedService.FetchAndSaveArticlesAsync(feedUrl);
+                await _rssFeedFetcherService.FetchAndSaveArticlesAsync(feedUrl);
                 await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
             }
         }
