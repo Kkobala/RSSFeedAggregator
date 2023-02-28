@@ -14,12 +14,10 @@ namespace RSSFeed.Fetcher
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var feedUrl = new List<string>();
-
             while (!stoppingToken.IsCancellationRequested)
             {
-                await _rssFeedFetcherService.FetchAndSaveArticlesAsync(feedUrl);
-                await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+                await _rssFeedFetcherService.FetchAndSaveArticlesAsync();
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
         }
     }

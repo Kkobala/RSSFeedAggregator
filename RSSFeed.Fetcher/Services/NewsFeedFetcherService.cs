@@ -2,7 +2,6 @@
 using RSSFeed.Api.Db;
 using RSSFeed.Api.Db.Entities;
 using System.ServiceModel.Syndication;
-using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace RSSFeed.Fetcher.Services
@@ -31,9 +30,24 @@ namespace RSSFeed.Fetcher.Services
             return SyndicationFeed.Load(reader);
         }
 
-        public async Task FetchAndSaveArticlesAsync(List<string> feedUrls)
+        public async Task FetchAndSaveArticlesAsync()
         {
-            //Parallel.ForEach(feedUrls, async (feedUrl) =>
+            List<string> feedUrls = new List<string>
+            {
+                 "https://stackoverflow.blog/feed/",
+                 "https://dev.to/feed",
+                 "https://www.freecodecamp.org/news/rss",
+                 "https://martinfowler.com/feed.atom",
+                 "https://codeblog.jonskeet.uk/feed/",
+                 "https://devblogs.microsoft.com/visualstudio/feed/",
+                 "https://feed.infoq.com/",
+                 "https://css-tricks.com/feed/",
+                 "https://codeopinion.com/feed/",
+                 "https://andrewlock.net/rss.xml",
+                 "https://michaelscodingspot.com/index.xml",
+                 "https://www.tabsoverspaces.com/feed.xml"
+            };
+
             foreach (var feedUrl in feedUrls)
             {
                 var feed = await LoadFeedAsync(feedUrl);
@@ -65,18 +79,18 @@ namespace RSSFeed.Fetcher.Services
 
         private async Task CategorizeAndSaveFeedAsync(FeedEntity feed)
         {
-            feed.Title = RemoveJavascriptCode(feed.Title);
-            feed.Description = RemoveJavascriptCode(feed.Description);
-            feed.Author = RemoveJavascriptCode(feed.Author);
-            feed.Tags = RemoveJavascriptCode(feed.Tags);
+            feed.Title = RemoveJavascriptCode(feed.Title!);
+            feed.Description = RemoveJavascriptCode(feed.Description!);
+            feed.Author = RemoveJavascriptCode(feed.Author!);
+            feed.Tags = RemoveJavascriptCode(feed.Tags!);
 
             var existingTags = await _db.Tags
-                .Where(t => feed.Title.Contains(t.Name) || feed.Description.Contains(t.Name))
+                .Where(t => feed.Title.Contains(t.Name!) || feed.Description.Contains(t.Name!))
                 .ToListAsync();
 
             foreach (var tag in existingTags)
             {
-                if (!feed.Tags.Contains(tag.Name))
+                if (!feed.Tags.Contains(tag.Name!))
                 {
                     if (!string.IsNullOrEmpty(feed.Tags))
                     {
@@ -104,14 +118,15 @@ namespace RSSFeed.Fetcher.Services
                 return text;
             }
 
-            const string pattern = @"<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>";
-            return Regex.Replace(text, pattern, string.Empty, RegexOptions.IgnoreCase);
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(text);
+            return doc.DocumentNode.InnerText;
         }
 
         public async Task<bool> FeedExistsAsync(string feedUrl, string feedTitle)
         {
             return await _db.FeedEntities
-                .AnyAsync(a => a.Link.StartsWith(feedUrl) && a.Title.ToLower() == feedTitle.ToLower());
+                .AnyAsync(a => a.Link!.StartsWith(feedUrl) && a.Title!.ToLower() == feedTitle.ToLower());
         }
     }
 }
